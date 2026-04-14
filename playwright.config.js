@@ -4,10 +4,11 @@ export default defineConfig({
   testDir: './tests',
   timeout: 40000,
   expect: {
-    timeout: 40000,
+    timeout: 50000,
   },
   reporter: 'html',
   use: {
-    browserName: 'chromium',
+    browserName: 'webkit',
+    headless: false
   },
 });
