@@ -2,7 +2,7 @@
 
 import { test, expect } from '@playwright/test';
 
-test('Browser Context Playwright test', async ({browser}) =>
+test.only('Browser Context Playwright test', async ({browser}) =>
 {
     //chrome - plugins/ cookies
        const context = await browser.newContext();
@@ -25,6 +25,5 @@ test('Page Playwright test', async ({page }) =>
 {
     await page.goto("https://www.google.com");
     //
-
 
 });
