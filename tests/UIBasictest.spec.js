@@ -1,10 +1,11 @@
 // Imports the test runner function from Playwright
 
 import { test, expect } from '@playwright/test';
+import expectedRestaurants from '../test-data/islandRestaurants.json' with { type: 'json' };
 
 test.only('Browser Context Playwright test', async ({browser}) =>
 {
-    //chrome - plugins/ cookies
+
 
        const context = await browser.newContext();
        const page = await context.newPage();
@@ -12,10 +13,8 @@ test.only('Browser Context Playwright test', async ({browser}) =>
        const signIn = page.getByRole('button', { name: 'Sign In' });
        const restaurantLocator = page.getByRole('heading', {level: 2});
        await page.goto('https://www.gidispots.com/login');
-       // Get title - assertion
        console.log(await page.title());
        await expect(page).toHaveTitle("GidiSpots | The Ultimate Lagos Dining Guide");
-       // css , xpath
        await page.getByRole('textbox', { name: 'name@example.com'}).fill('adigunmarcus@gmail.com');
        await page.getByRole('textbox', { name: '••••••••'}).fill('12345678');
        await page.getByRole('button', { name: 'Sign In' }).click();
@@ -28,12 +27,14 @@ test.only('Browser Context Playwright test', async ({browser}) =>
        console.log("Scrolling down to load more restaurants")
        for (let i = 0; i < 10; i++) {
          await page.evaluate(() => window.scrollBy(0, 1000));
-         await page.waitForTimeout(2000);
+         await page.waitForTimeout(1000);
        }
 
        const allRestaurants = await restaurantLocator.allTextContents();
        console.log(`Success! Found ${allRestaurants.length} restaurants on the Island:`);
        console.log(allRestaurants);
+       expect(allRestaurants).toEqual(expect.arrayContaining(expectedRestaurants));
+       expect(allRestaurants).not.toContain("Italawa settings");
 
        expect(allRestaurants.length).toBeGreaterThan(30);
 
