@@ -5,8 +5,11 @@ import { test, expect } from '@playwright/test';
 test.only('Browser Context Playwright test', async ({browser}) =>
 {
     //chrome - plugins/ cookies
+
        const context = await browser.newContext();
        const page = await context.newPage();
+       const password = page.getByRole('textbox', { name: '••••••••' });
+       const signIn = page.getByRole('button', { name: 'Sign In' });
        await page.goto('https://www.gidispots.com/login');
        // Get title - assertion
        console.log(await page.title());
@@ -16,6 +19,12 @@ test.only('Browser Context Playwright test', async ({browser}) =>
        await page.getByRole('textbox', { name: '••••••••'}).fill('12345678');
        await page.getByRole('button', { name: 'Sign In' }).click();
        await expect(page.getByText('Invalid login credentials')).toBeVisible();
+       await password.fill('*****')
+       await signIn.click();
+       await expect(page.getByRole('heading', { name: 'Onlychow' })).toBeVisible();
+
+
+
 
 
 });
