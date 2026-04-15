@@ -10,6 +10,7 @@ test.only('Browser Context Playwright test', async ({browser}) =>
        const page = await context.newPage();
        const password = page.getByRole('textbox', { name: '••••••••' });
        const signIn = page.getByRole('button', { name: 'Sign In' });
+       const restaurantLocator = page.getByRole('heading', {level: 2});
        await page.goto('https://www.gidispots.com/login');
        // Get title - assertion
        console.log(await page.title());
@@ -18,10 +19,25 @@ test.only('Browser Context Playwright test', async ({browser}) =>
        await page.getByRole('textbox', { name: 'name@example.com'}).fill('adigunmarcus@gmail.com');
        await page.getByRole('textbox', { name: '••••••••'}).fill('12345678');
        await page.getByRole('button', { name: 'Sign In' }).click();
-       await expect(page.getByText('Invalid login credentials')).toBeVisible();
-       await password.fill('*****')
+       await expect(page.getByText(/Invalid login credentials/i)).toBeVisible();
+       await password.fill('******')
        await signIn.click();
-       await expect(page.getByRole('heading', { name: 'Onlychow' })).toBeVisible();
+       await page.getByRole('button', {name: 'Island'}).click();
+       await restaurantLocator.first().waitFor();
+
+       console.log("Scrolling down to load more restaurants")
+       for (let i = 0; i < 10; i++) {
+         await page.evaluate(() => window.scrollBy(0, 1000));
+         await page.waitForTimeout(2000);
+       }
+
+       const allRestaurants = await restaurantLocator.allTextContents();
+       console.log(`Success! Found ${allRestaurants.length} restaurants on the Island:`);
+       console.log(allRestaurants);
+
+       expect(allRestaurants.length).toBeGreaterThan(30);
+
+
 
 
 
