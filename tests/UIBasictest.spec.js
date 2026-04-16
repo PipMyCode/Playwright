@@ -3,7 +3,7 @@
 import { test, expect } from '@playwright/test';
 import expectedRestaurants from '../test-data/islandRestaurants.json' with { type: 'json' };
 
-test.only('Browser Context Playwright test', async ({browser}) =>
+test('Browser Context Playwright test', async ({browser}) =>
 {
 
 
@@ -19,7 +19,7 @@ test.only('Browser Context Playwright test', async ({browser}) =>
        await page.getByRole('textbox', { name: '••••••••'}).fill('12345678');
        await page.getByRole('button', { name: 'Sign In' }).click();
        await expect(page.getByText(/Invalid login credentials/i)).toBeVisible();
-       await password.fill('******')
+       await password.fill('*****')
        await signIn.click();
        await page.getByRole('button', {name: 'Island'}).click();
        await restaurantLocator.first().waitFor();
