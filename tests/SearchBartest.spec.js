@@ -31,7 +31,7 @@ test.only('Search Bar with Static Dropdown Filter' , async ({page}) =>
 
   const searchBar = page.getByRole('textbox', { name: 'Search for spots...' });
   await searchBar.fill('Bay Lounge');
-  await page.locator('button:has(.lucide-funnel)').click();
+  //await page.locator('button:has(.lucide-funnel)').click();
 
   await page.getByRole('combobox').first().selectOption('Ikeja');
 
